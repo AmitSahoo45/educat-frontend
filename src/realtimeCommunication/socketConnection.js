@@ -15,10 +15,8 @@ export const connectWithSocketServer = (userDetails) => {
   const jwtToken = userDetails.token;
 
   // socket = io("http://localhost:5000", {
-  socket = io("http://localhost:5000", {
-    auth: {
-      token: jwtToken,
-    },
+  socket = io("https://studentaze-backend.vercel.app", {
+    auth: { token: jwtToken }
   });
 
   socket.on("connect", () => {
