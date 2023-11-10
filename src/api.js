@@ -3,6 +3,12 @@ import { logout } from "./shared/utils/auth";
 
 const apiClient = axios.create({
   // baseURL: "http://localhost:5000/api",
+  baseURL: "https://educat-backend-qx3f.onrender.com/api",
+  timeout: 120000,
+});
+
+const apiClient2 = axios.create({
+  // baseURL: "http://localhost:5000/api",
   baseURL: "https://studentaze-backend.vercel.app/api",
   timeout: 120000,
 });
@@ -23,11 +29,27 @@ apiClient.interceptors.request.use(
   }
 );
 
+apiClient2.interceptors.request.use(
+  (config) => {
+    const userDetails = localStorage.getItem("user");
+
+    if (userDetails) {
+      const token = JSON.parse(userDetails).token;
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
+  },
+  (err) => {
+    return Promise.reject(err);
+  }
+);
+
 // public routes
 
 export const login = async (data) => {
   try {
-    return await apiClient.post("/auth/login", data);
+    return await apiClient2.post("/auth/login", data);
   } catch (exception) {
     return {
       error: true,
@@ -38,7 +60,7 @@ export const login = async (data) => {
 
 export const register = async (data) => {
   try {
-    return await apiClient.post("/auth/register", data);
+    return await apiClient2.post("/auth/register", data);
   } catch (exception) {
     return {
       error: true,
