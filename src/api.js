@@ -4,7 +4,7 @@ import { logout } from "./shared/utils/auth";
 const apiClient = axios.create({
   // baseURL: "http://localhost:5000/api",
   baseURL: "https://studentaze-backend.vercel.app/api",
-  timeout: 1000,
+  timeout: 120000,
 });
 
 apiClient.interceptors.request.use(
