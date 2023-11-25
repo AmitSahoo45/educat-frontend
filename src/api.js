@@ -1,15 +1,21 @@
 import axios from "axios";
 import { logout } from "./shared/utils/auth";
 
+export const APIURLS = [
+  "https://educat-backend-qx3f.onrender.com/api",
+  "https://studentaze-backend.vercel.app/api",
+  "https://educat-backend-2.vercel.app/api",
+]
+
 const apiClient = axios.create({
-  // baseURL: "http://localhost:5000/api",
-  baseURL: "https://educat-backend-qx3f.onrender.com/api",
+  baseURL: "http://localhost:5000/api",
+  // baseURL: "https://educat-backend-qx3f.onrender.com/api",
   timeout: 120000,
 });
 
 const apiClient2 = axios.create({
-  // baseURL: "http://localhost:5000/api",
-  baseURL: "https://studentaze-backend.vercel.app/api",
+  baseURL: "http://localhost:5000/api",
+  // baseURL: "https://studentaze-backend.vercel.app/api",
   timeout: 120000,
 });
 
@@ -113,3 +119,87 @@ const checkResponseCode = (exception) => {
     (responseCode === 401 || responseCode === 403) && logout();
   }
 };
+
+export const createQuiz = async (data) => {
+  try {
+    return await apiClient2.post("/quiz/create", data);
+  } catch (exception) {
+    checkResponseCode(exception);
+    return {
+      error: true,
+      exception,
+    };
+  }
+}
+
+export const FetchAllQuizzes = async () => {
+  try {
+    return await apiClient2.get("/quiz/all");
+  } catch (exception) {
+    checkResponseCode(exception);
+    return {
+      error: true,
+      exception,
+    };
+  }
+}
+
+export const UpdateQuiz = async (data) => {
+  try {
+    return await apiClient2.patch(`/quiz/update/${data.id}`, data);
+  } catch (exception) {
+    checkResponseCode(exception);
+    return {
+      error: true,
+      exception,
+    };
+  }
+}
+
+export const DeleteQuiz = async ({ id }) => {
+  try {
+    return await apiClient2.delete(`/quiz/delete/${id}`);
+  } catch (exception) {
+    checkResponseCode(exception);
+    return {
+      error: true,
+      exception,
+    };
+  }
+}
+
+export const ToggleQuizAvailability = async ({ id, isChecked }) => {
+  try {
+    return await apiClient2.patch(`/quiz/update/${id}/activity`, { isChecked });
+  } catch (exception) {
+    checkResponseCode(exception);
+    return {
+      error: true,
+      exception,
+    };
+  }
+}
+
+export const FetchQuiz = async ({ id }) => {
+  try {
+    return await apiClient2.get(`/quiz/${id}`);
+  } catch (exception) {
+    checkResponseCode(exception);
+    return {
+      error: true,
+      exception,
+    };
+  }
+}
+
+export const SubmitQuizQuestion = async ({ id, isCorrect, question }) => {
+  try {
+    return await apiClient2.patch(`/quiz/${id}/submit`, { isCorrect, question });
+  } catch (exception) {
+    checkResponseCode(exception);
+    return {
+      error: true,
+      exception,
+    };
+  }
+}

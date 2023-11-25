@@ -6,10 +6,14 @@ import { Provider } from "react-redux";
 import store from "./store/store";
 import * as serviceWorker from "./serviceWorker";
 
+import { ProviderContext } from './shared/context/Context'
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <ProviderContext>
+        <App />
+      </ProviderContext>
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")

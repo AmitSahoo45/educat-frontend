@@ -14,8 +14,8 @@ let socket = null;
 export const connectWithSocketServer = (userDetails) => {
   const jwtToken = userDetails.token;
 
-  // socket = io("http://localhost:5000", {
-  socket = io("https://educat-backend-qx3f.onrender.com", {
+  socket = io("http://localhost:5000", {
+  // socket = io("https://educat-backend-qx3f.onrender.com", {
     auth: { token: jwtToken }
   });
 

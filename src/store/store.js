@@ -7,6 +7,7 @@ import alertReducer from "./reducers/alertReducer";
 import friendsReducer from "./reducers/friendsReducer";
 import chatReducer from "./reducers/chatReducer";
 import roomReducer from "./reducers/roomReducer";
+import quizReducer from './slices/quiz'
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   friends: friendsReducer,
   chat: chatReducer,
   room: roomReducer,
+  quiz: quizReducer
 });
 
 const store = createStore(
