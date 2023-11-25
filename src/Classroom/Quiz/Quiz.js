@@ -97,7 +97,6 @@ const Quiz = () => {
         )
     }
 
-
     return (
         <>
             <Navbar />

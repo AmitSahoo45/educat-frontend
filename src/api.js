@@ -7,15 +7,19 @@ export const APIURLS = [
   "https://educat-backend-2.vercel.app/api",
 ]
 
+// randomly select an api url
+const randomIndex = Math.floor(Math.random() * APIURLS.length)
+const baseurl = APIURLS[randomIndex]
+
 const apiClient = axios.create({
-  baseURL: "http://localhost:5000/api",
-  // baseURL: "https://educat-backend-qx3f.onrender.com/api",
+  // baseURL: "http://localhost:5000/api",
+  baseURL: "https://educat-backend-qx3f.onrender.com/api",
   timeout: 120000,
 });
 
 const apiClient2 = axios.create({
-  baseURL: "http://localhost:5000/api",
-  // baseURL: "https://studentaze-backend.vercel.app/api",
+  // baseURL: "http://localhost:5000/api",
+  baseURL: baseurl,
   timeout: 120000,
 });
 
@@ -195,6 +199,18 @@ export const FetchQuiz = async ({ id }) => {
 export const SubmitQuizQuestion = async ({ id, isCorrect, question }) => {
   try {
     return await apiClient2.patch(`/quiz/${id}/submit`, { isCorrect, question });
+  } catch (exception) {
+    checkResponseCode(exception);
+    return {
+      error: true,
+      exception,
+    };
+  }
+}
+
+export const FetchAllResults = async ({ id }) => {
+  try {
+    return await apiClient2.get(`/quiz/${id}/result`)
   } catch (exception) {
     checkResponseCode(exception);
     return {

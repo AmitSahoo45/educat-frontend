@@ -63,7 +63,8 @@ const Classroom = () => {
     }
 
     const CopyToClipBoard = (id) => {
-        navigator.clipboard.writeText(`http://localhost:3000/classroom/quiz/${id}`)
+        // navigator.clipboard.writeText(`http://localhost:3000/classroom/quiz/${id}`)
+        navigator.clipboard.writeText(`https://studentaze.vercel.app/classroom/quiz/${id}`)
         dispatch(openAlertMessage('Link Copied to Clipboard', 'success'))
     }
 
@@ -115,13 +116,22 @@ const Classroom = () => {
                             >
                                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
                                     <Typography variant="h5" sx={{ fontSize: "1.2rem" }}>{qz.quizName}</Typography>
-                                    <Button
-                                        variant='text'
-                                        color='primary'
-                                        onClick={() => openQuizModal(qz._id)}
-                                    >
-                                        View
-                                    </Button>
+                                    <div>
+                                        <Button
+                                            variant='text'
+                                            color='primary'
+                                            onClick={() => openQuizModal(qz._id)}
+                                        >
+                                            View
+                                        </Button>
+                                        <Button
+                                            variant='text'
+                                            color='primary'
+                                            onClick={() => history.push(`/classroom/results/${qz._id}`)}
+                                        >
+                                            Results
+                                        </Button>
+                                    </div>
                                 </Box>
                                 <Typography variant="h5" sx={{ fontSize: "1.2rem" }}>
                                     {qz.quizSubTitle.slice(0, 100)}.....

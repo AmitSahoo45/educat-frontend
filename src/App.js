@@ -15,6 +15,7 @@ import AlertNotification from "./shared/components/AlertNotification";
 
 import "./App.css";
 import CreateQuiz from "./Classroom/CreateQuiz/CreateQuiz";
+import Results from "./Classroom/Results/Results";
 
 function App() {
   return (
@@ -35,6 +36,9 @@ function App() {
           </Route>
           <Route exact path="/classroom/quiz/:id">
             <Quiz />
+          </Route>
+          <Route exact path="/classroom/results/:id">
+            <Results />
           </Route>
           <Route path="/classroom">
             <Classroom />
