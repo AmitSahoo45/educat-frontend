@@ -48,7 +48,9 @@ const Navbar = () => {
                             letterSpacing: '.3rem',
                             color: 'inherit',
                             textDecoration: 'none',
+                            cursor: 'pointer',
                         }}
+                        onClick={() => history.push("/classroom")}
                     >
                         CLASSROOM
                     </Typography>

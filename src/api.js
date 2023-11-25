@@ -2,7 +2,7 @@ import axios from "axios";
 import { logout } from "./shared/utils/auth";
 
 export const APIURLS = [
-  "https://educat-backend-qx3f.onrender.com/api",
+  // "https://educat-backend-qx3f.onrender.com/api",
   "https://studentaze-backend.vercel.app/api",
   "https://educat-backend-2.vercel.app/api",
 ]
