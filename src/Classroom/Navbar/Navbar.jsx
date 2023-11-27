@@ -9,7 +9,6 @@ import { ContextStore } from '../../shared/context/Context';
 import { logout } from '../../shared/utils/auth';
 
 const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const Navbar = () => {
     const { user, setUser } = useContext(ContextStore);
@@ -34,7 +33,7 @@ const Navbar = () => {
 
     return (
         <AppBar position="static">
-            <Container maxWidth="xl">
+            <Container maxWidth="xl" sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Toolbar disableGutters>
                     <Typography
                         variant="h6"
@@ -55,32 +54,6 @@ const Navbar = () => {
                         CLASSROOM
                     </Typography>
 
-                    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-                        <Menu
-                            id="menu-appbar"
-                            anchorEl={anchorElNav}
-                            anchorOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'left',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'left',
-                            }}
-                            open={Boolean(anchorElNav)}
-                            onClose={handleCloseNavMenu}
-                            sx={{
-                                display: { xs: 'block', md: 'none' },
-                            }}
-                        >
-                            {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">{page}</Typography>
-                                </MenuItem>
-                            ))}
-                        </Menu>
-                    </Box>
                     <Typography
                         variant="h5"
                         noWrap
@@ -98,7 +71,12 @@ const Navbar = () => {
                     >
                         CLASSROOM
                     </Typography>
+
                 </Toolbar>
+
+                <Button type='button' onClick={() => logout(history)} sx={{ backgroundColor: 'red', color: 'white', height: '35px', border: '2px solid red', ":hover": { backgroundColor: 'transparent' } }}>
+                    Logout
+                </Button>
             </Container>
         </AppBar>
     )

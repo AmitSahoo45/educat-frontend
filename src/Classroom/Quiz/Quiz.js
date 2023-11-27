@@ -8,6 +8,7 @@ import Navbar from '../Navbar/Navbar'
 import { openAlertMessage } from '../../store/actions/alertActions'
 import { ContextStore } from '../../shared/context/Context'
 import { useHistory } from 'react-router-dom'
+import Loader from '../Loader'
 
 const Quiz = () => {
     const [Quiz, setQuiz] = useState(null)
@@ -101,7 +102,11 @@ const Quiz = () => {
         <>
             <Navbar />
             <Wrapper>
-                {loading && <h1>Loading...</h1>}
+                {loading &&
+                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <Loader />
+                    </Box>
+                }
 
                 {(!Quiz?.isChecked || !Quiz) &&
                     <Box sx={{

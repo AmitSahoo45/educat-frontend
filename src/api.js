@@ -2,7 +2,7 @@ import axios from "axios";
 import { logout } from "./shared/utils/auth";
 
 export const APIURLS = [
-  // "https://educat-backend-qx3f.onrender.com/api",
+  "https://educat-backend-qx3f.onrender.com/api",
   "https://studentaze-backend.vercel.app/api",
   "https://educat-backend-2.vercel.app/api",
 ]
@@ -10,9 +10,9 @@ export const APIURLS = [
 // randomly select an api url
 const randomIndex = Math.floor(Math.random() * APIURLS.length)
 const baseurl = APIURLS[randomIndex]
+// const baseurl = "http://localhost:5000/api"
 
 const apiClient = axios.create({
-  // baseURL: "http://localhost:5000/api",
   baseURL: "https://educat-backend-qx3f.onrender.com/api",
   timeout: 120000,
 });

@@ -6,26 +6,28 @@ import { useParams } from 'react-router-dom'
 import Navbar from '../Navbar/Navbar'
 import { FetchAllResults } from '../../api'
 import { openAlertMessage } from '../../store/actions/alertActions'
+import Loader from '../Loader'
 
 const Results = () => {
     const [result, setResult] = useState([])
     const [length, setLength] = useState(0)
     const [quizName, setQuizName] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
 
     const dispatch = useDispatch()
     const { id } = useParams()
 
     const getResult = async () => {
         try {
+            setIsLoading(true)
             const { data } = await FetchAllResults({ id })
             if (data?.status)
                 throw new Error('Result not found')
 
-            // console.log(data)
-
             setResult(data.results)
             setLength(data.length)
             setQuizName(data.quizName)
+            setIsLoading(false)
         } catch (error) {
             dispatch(openAlertMessage(error.message, 'error'))
         }
@@ -42,10 +44,6 @@ const Results = () => {
     useEffect(() => {
         if (id) getResult()
     }, [id])
-
-    useEffect(() => {
-        console.log(result)
-    }, [result])
 
     const Wrapper = ({ children }) => {
         return (
@@ -64,39 +62,47 @@ const Results = () => {
         <Wrapper>
             <Navbar />
 
-            <Box>
-                <Typography variant="h4" sx={{ textAlign: 'center', marginTop: '2rem' }}>
-                    {quizName}
-                </Typography>
+            {isLoading &&
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <Loader />
+                </Box>
+            }
 
-                <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Sl No</TableCell>
-                                <TableCell align="right">Name</TableCell>
-                                <TableCell align="right">Email</TableCell>
-                                <TableCell align="right">Score</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {result?.map((quiz, index) => (
-                                <TableRow
-                                    key={index}
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                >
-                                    <TableCell component="th" scope="row">{index}</TableCell>
-                                    <TableCell align="right">{quiz.user.username}</TableCell>
-                                    <TableCell align="right">{quiz.user.mail}</TableCell>
-                                    <TableCell align="right">
-                                        {calculateScore(quiz.UserAttempted)} / {length}
-                                    </TableCell>
+            {!isLoading &&
+                <Box>
+                    <Typography variant="h4" sx={{ textAlign: 'center', marginTop: '2rem' }}>
+                        {quizName}
+                    </Typography>
+
+                    <TableContainer component={Paper}>
+                        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Sl No</TableCell>
+                                    <TableCell align="right">Name</TableCell>
+                                    <TableCell align="right">Email</TableCell>
+                                    <TableCell align="right">Score</TableCell>
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Box>
+                            </TableHead>
+                            <TableBody>
+                                {result?.map((quiz, index) => (
+                                    <TableRow
+                                        key={index}
+                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                    >
+                                        <TableCell component="th" scope="row">{index}</TableCell>
+                                        <TableCell align="right">{quiz.user.username}</TableCell>
+                                        <TableCell align="right">{quiz.user.mail}</TableCell>
+                                        <TableCell align="right">
+                                            {calculateScore(quiz.UserAttempted)} / {length}
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Box>
+            }
         </Wrapper>
     )
 }

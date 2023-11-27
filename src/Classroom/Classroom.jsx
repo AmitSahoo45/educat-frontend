@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { Box, Button, Dialog, DialogContent, DialogTitle, Slide, Typography, useMediaQuery } from '@mui/material'
+import { Box, Button, Dialog, DialogContent, DialogTitle, LinearProgress, Slide, Typography, useMediaQuery } from '@mui/material'
 import { useTheme } from '@mui/material/styles';
 import { Public, PublicOff, Share, Edit, Delete, Close } from '@mui/icons-material'
 
@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { selectQuiz, getQuiz, deleteQuizCall, ToggleQuizAvailabilityOfQuiz } from '../store/slices/quiz'
 import { ContextStore } from '../shared/context/Context'
 import { openAlertMessage } from '../store/actions/alertActions';
+import Loader from './Loader';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -85,8 +86,8 @@ const Classroom = () => {
         <>
             <Navbar />
             <Wrapper>
-                <Typography variant="h4" sx={{ marginBottom: '20px', paddingTop: "10px", fontSize: "1.5rem", display: "flex", justifyContent: "center" }}>WELCOME TO CLASSROOM</Typography>
-                <Box sx={{ display: "flex", justifyContent: "flex-end", marginRight: '2rem', borderBottom: '1px solid #FFFFFF', width: '90%', marginX: 'auto' }}>
+                <Box sx={{ display: "flex", justifyContent: "space-between", paddingTop: '1.5rem', marginRight: '2rem', borderBottom: '1px solid #FFFFFF', width: '90%', marginX: 'auto' }}>
+                    <Typography variant="h4" sx={{ marginBottom: '20px', paddingTop: "10px", fontSize: "1.5rem", display: "flex", justifyContent: "center" }}>WELCOME TO CLASSROOM</Typography>
                     <Button
                         variant="contained"
                         sx={{ marginLeft: "10px", marginRight: "10px", marginBottom: "20px" }}
@@ -97,81 +98,87 @@ const Classroom = () => {
                 </Box>
                 {!quiz && <Typography variant="h5" sx={{ fontSize: "1.2rem", display: "flex", justifyContent: "center", marginTop: '20px' }}>No Quiz Created Yet</Typography>}
 
-                {quiz?.map((qz, index) => {
-                    return (
-                        <Box key={index} sx={{ display: "flex", justifyContent: "center", width: '90%', marginX: 'auto' }}>
-                            <Box sx={{
-                                backgroundColor: "#36393F",
-                                color: 'white',
-                                width: '100%',
-                                marginY: '10px',
-                                padding: { sm: '16px', xs: '10px' },
-                                borderRadius: '5px',
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                alignItems: 'flex-start',
-                                flexDirection: 'column',
-                                '&:hover': { backgroundColor: '#202225' }
-                            }}
-                            >
-                                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-                                    <Typography variant="h5" sx={{ fontSize: "1.2rem" }}>{qz.quizName}</Typography>
-                                    <div>
-                                        <Button
-                                            variant='text'
-                                            color='primary'
-                                            onClick={() => openQuizModal(qz._id)}
-                                        >
-                                            View
-                                        </Button>
-                                        <Button
-                                            variant='text'
-                                            color='primary'
-                                            onClick={() => history.push(`/classroom/results/${qz._id}`)}
-                                        >
-                                            Results
-                                        </Button>
-                                    </div>
-                                </Box>
-                                <Typography variant="h5" sx={{ fontSize: "1.2rem" }}>
-                                    {qz.quizSubTitle.slice(0, 100)}.....
-                                </Typography>
-                                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-                                    <Box
-                                        sx={{ display: 'flex', marginTop: '10px', cursor: 'pointer' }}
-                                        onClick={() => handleToggleQuizAvailability(qz._id, !qz.isChecked)}
-                                    >
-                                        {qz.isChecked ?
-                                            <>
-                                                <Public sx={{ color: '#90EE90', marginRight: '8px' }} />
-                                                <Typography variant='subtitle2'>The quiz is public.</Typography>
-                                            </>
-                                            :
-                                            <>
-                                                <PublicOff sx={{ color: '#FF0000', marginRight: '8px' }} />
-                                                <Typography variant='subtitle2'>The quiz is private.</Typography>
-                                            </>
-                                        }
-                                    </Box>
-                                    <Box>
-                                        <Share
-                                            sx={{ cursor: 'pointer', color: '#90EE90' }}
-                                            onClick={() => CopyToClipBoard(qz._id)}
-                                        />
-                                        <Edit
-                                            sx={{ cursor: 'pointer', marginLeft: { xs: '4px', sm: '8px', }, color: '#FFFF00' }}
-                                            onClick={() => history.push(`/classroom/edit/${qz._id}`)}
-                                        />
-                                        <Delete
-                                            sx={{ cursor: 'pointer', marginLeft: { xs: '4px', sm: '8px', }, color: '#FF0000' }}
-                                            onClick={() => openDeleteModal(qz._id)}
-                                        />
-                                    </Box>
-                                </Box>
-                            </Box>
+                {
+                    quiz?.length === 0 ?
+                        <Box sx={{ width: '100%' }}>
+                            <Loader />
                         </Box>
-                    )
-                })}
+                        :
+                        quiz.map((qz, index) => {
+                            return (
+                                <Box key={index} sx={{ display: "flex", justifyContent: "center", width: '90%', marginX: 'auto' }}>
+                                    <Box sx={{
+                                        backgroundColor: "#36393F",
+                                        color: 'white',
+                                        width: '100%',
+                                        marginY: '10px',
+                                        padding: { sm: '16px', xs: '10px' },
+                                        borderRadius: '5px',
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'flex-start',
+                                        flexDirection: 'column',
+                                        '&:hover': { backgroundColor: '#202225' }
+                                    }}
+                                    >
+                                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+                                            <Typography variant="h5" sx={{ fontSize: "1.2rem" }}>{qz.quizName}</Typography>
+                                            <div>
+                                                <Button
+                                                    variant='text'
+                                                    color='primary'
+                                                    onClick={() => openQuizModal(qz._id)}
+                                                >
+                                                    View
+                                                </Button>
+                                                <Button
+                                                    variant='text'
+                                                    color='primary'
+                                                    onClick={() => history.push(`/classroom/results/${qz._id}`)}
+                                                >
+                                                    Results
+                                                </Button>
+                                            </div>
+                                        </Box>
+                                        <Typography variant="h5" sx={{ fontSize: "1.2rem" }}>
+                                            {qz.quizSubTitle.slice(0, 100)}.....
+                                        </Typography>
+                                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+                                            <Box
+                                                sx={{ display: 'flex', marginTop: '10px', cursor: 'pointer' }}
+                                                onClick={() => handleToggleQuizAvailability(qz._id, !qz.isChecked)}
+                                            >
+                                                {qz.isChecked ?
+                                                    <>
+                                                        <Public sx={{ color: '#90EE90', marginRight: '8px' }} />
+                                                        <Typography variant='subtitle2'>The quiz is public.</Typography>
+                                                    </>
+                                                    :
+                                                    <>
+                                                        <PublicOff sx={{ color: '#FF0000', marginRight: '8px' }} />
+                                                        <Typography variant='subtitle2'>The quiz is private.</Typography>
+                                                    </>
+                                                }
+                                            </Box>
+                                            <Box>
+                                                <Share
+                                                    sx={{ cursor: 'pointer', color: '#90EE90' }}
+                                                    onClick={() => CopyToClipBoard(qz._id)}
+                                                />
+                                                <Edit
+                                                    sx={{ cursor: 'pointer', marginLeft: { xs: '4px', sm: '8px', }, color: '#FFFF00' }}
+                                                    onClick={() => history.push(`/classroom/edit/${qz._id}`)}
+                                                />
+                                                <Delete
+                                                    sx={{ cursor: 'pointer', marginLeft: { xs: '4px', sm: '8px', }, color: '#FF0000' }}
+                                                    onClick={() => openDeleteModal(qz._id)}
+                                                />
+                                            </Box>
+                                        </Box>
+                                    </Box>
+                                </Box>
+                            )
+                        })}
             </Wrapper>
 
             <Dialog
@@ -223,7 +230,18 @@ const Classroom = () => {
                                                     </Typography>
                                                     {question?.quizOptions.map((option) => {
                                                         return (
-                                                            <Box key={option._id} sx={{ display: "flex", justifyContent: "flex-start", width: '100%', marginX: 'auto', marginY: '6px', paddingX: { sm: '8px', xs: '6px' }, borderRadius: '8px', border: '1px solid #3539358a', ":hover": { backgroundColor: '#eaeaea', cursor: 'pointer' } }}>
+                                                            <Box key={option._id}
+                                                                sx={{
+                                                                    display: "flex",
+                                                                    justifyContent: "flex-start",
+                                                                    width: '100%',
+                                                                    marginX: 'auto',
+                                                                    marginY: '6px',
+                                                                    paddingX: { sm: '8px', xs: '6px' },
+                                                                    backgroundColor: `${option.isCorrect ? '#90EE90' : '#eaeaea'}`,
+                                                                    borderRadius: '8px', border: '1px solid #3539358a',
+                                                                    ":hover": { cursor: 'pointer' }
+                                                                }}>
                                                                 <Typography variant="subtitle1">{option.index}. {option.option}</Typography>
                                                             </Box>
                                                         )
